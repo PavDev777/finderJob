@@ -22,7 +22,7 @@ export type handleJobType = {
 
 export interface createJobReturnType {
   company: string;
-  createdAt: string;
+  createdAt: Date;
   createdBy: string;
   jobLocation: string;
   jobType: string;

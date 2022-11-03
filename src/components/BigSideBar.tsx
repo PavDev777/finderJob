@@ -14,7 +14,6 @@ export const BigSideBar = () => {
 
   return (
     <Wrapper>
-      <aside></aside>
       <div className={cls}>
         <div className="content">
           <header>
