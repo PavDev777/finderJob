@@ -32,3 +32,11 @@ export interface createJobReturnType {
   __v: number;
   _id: string;
 }
+
+export interface IEditedJob {
+  jobId: IInitialStateJob["editJobId"];
+  job: Pick<
+    IInitialStateJob,
+    "position" | "company" | "jobLocation" | "jobType" | "status"
+  >;
+}

@@ -3,6 +3,7 @@ import { FaBriefcase, FaCalendarAlt, FaLocationArrow } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Wrapper from "../assets/wrappers/Job";
 import { useAppDispatch } from "../redux/hooks";
+import { deleteJob, editJob } from "../redux/slices/job/jobSlice";
 import { createJobReturnType } from "../redux/slices/job/type";
 import { JobInfo } from "./JobInfo";
 
@@ -47,14 +48,25 @@ export const Job: FC<IJobProps> = ({
             <Link
               to="/add-job"
               className="btn edit-btn"
-              onClick={() => console.log("edit")}
+              onClick={() =>
+                dispatch(
+                  editJob({
+                    editJobId: _id,
+                    position,
+                    company,
+                    jobLocation,
+                    jobType,
+                    status,
+                  })
+                )
+              }
             >
               Edit
             </Link>
             <button
               type="button"
               className="btn delete-btn"
-              onClick={() => console.log("delete")}
+              onClick={() => dispatch(deleteJob(_id))}
             >
               delete
             </button>

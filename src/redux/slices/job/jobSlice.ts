@@ -3,8 +3,14 @@ import { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import { fetchCustom } from "../../../utils/axios";
 import { getUserFromLocalStorage } from "../../../utils/localStorage";
+import { getAllJobs } from "../allJobs/allJobsSlice";
 import { IuserSliceState, logOutUser } from "../user/userSlice";
-import { createJobReturnType, handleJobType, IInitialStateJob } from "./type";
+import {
+  createJobReturnType,
+  handleJobType,
+  IEditedJob,
+  IInitialStateJob,
+} from "./type";
 
 const initialState: IInitialStateJob = {
   isLoading: false,
@@ -46,6 +52,46 @@ export const createJob = createAsyncThunk<
   }
 });
 
+export const deleteJob = createAsyncThunk<
+  string,
+  string,
+  { state: { user: IuserSliceState }; rejectValue: string }
+>("job/deleteJob", async (idJob, thunkAPI) => {
+  try {
+    const response = await fetchCustom.delete(`/jobs/${idJob}`, {
+      headers: {
+        authorization: `Bearer ${thunkAPI.getState().user.user?.token}`,
+      },
+    });
+    thunkAPI.dispatch(getAllJobs());
+    return response.data.msg;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      return thunkAPI.rejectWithValue(error.response?.data.msg);
+    }
+  }
+});
+
+export const editedJob = createAsyncThunk<
+  any,
+  IEditedJob,
+  { state: { user: IuserSliceState }; rejectValue: string }
+>("job/editJob", async ({ jobId, job }, thunkAPI) => {
+  try {
+    const response = await fetchCustom.patch(`/jobs/${jobId}`, job, {
+      headers: {
+        authorization: `Bearer ${thunkAPI.getState().user.user?.token}`,
+      },
+    });
+    thunkAPI.dispatch(clearValues());
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      return thunkAPI.rejectWithValue(error.response?.data.msg);
+    }
+  }
+});
+
 export const jobSlice = createSlice({
   name: "job",
   initialState,
@@ -57,6 +103,26 @@ export const jobSlice = createSlice({
       return {
         ...initialState,
         jobLocation: getUserFromLocalStorage()?.location || "",
+      };
+    },
+    editJob(
+      state,
+      action: PayloadAction<
+        Pick<
+          IInitialStateJob,
+          | "editJobId"
+          | "position"
+          | "company"
+          | "jobLocation"
+          | "jobType"
+          | "status"
+        >
+      >
+    ) {
+      return {
+        ...state,
+        isEditing: true,
+        ...action.payload,
       };
     },
   },
@@ -76,9 +142,34 @@ export const jobSlice = createSlice({
         autoClose: 1500,
       });
     });
+    builder.addCase(deleteJob.rejected, (state, action) => {
+      toast.error(action.payload, {
+        autoClose: 1500,
+      });
+    });
+    builder.addCase(deleteJob.fulfilled, (state, action) => {
+      toast.success(action.payload, {
+        autoClose: 1500,
+      });
+    });
+    builder.addCase(editedJob.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(editedJob.fulfilled, (state, action) => {
+      state.isLoading = false;
+      toast.success("Job has been edited", {
+        autoClose: 1500,
+      });
+    });
+    builder.addCase(editedJob.rejected, (state, action) => {
+      state.isLoading = false;
+      toast.error(action.payload, {
+        autoClose: 1500,
+      });
+    });
   },
 });
 
-export const { handleChange, clearValues } = jobSlice.actions;
+export const { handleChange, clearValues, editJob } = jobSlice.actions;
 
 export default jobSlice.reducer;

@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   clearValues,
   createJob,
+  editedJob,
   handleChange,
 } from "../../redux/slices/job/jobSlice";
 import { jobSelector } from "../../redux/slices/job/selectors";
@@ -36,6 +37,23 @@ export const AddJob = () => {
       });
       return;
     }
+
+    if (isEditing) {
+      dispatch(
+        editedJob({
+          jobId: editJobId,
+          job: {
+            position,
+            company,
+            jobLocation,
+            jobType,
+            status,
+          },
+        })
+      );
+      return;
+    }
+
     dispatch(createJob({ position, company, jobLocation, jobType, status }));
   };
 
@@ -46,7 +64,7 @@ export const AddJob = () => {
   };
 
   useEffect(() => {
-    if (user?.location) {
+    if (user?.location && !isEditing) {
       dispatch(
         handleChange({
           name: "jobLocation",
