@@ -1,11 +1,10 @@
 import { ChangeEvent, FC } from "react";
-import { JobTypeOptions, StatusOptions } from "../redux/slices/job/type";
 
 interface IFormRowSelectProps {
   name: string;
   value: string;
   handleChange: (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-  listOptions: JobTypeOptions | StatusOptions;
+  listOptions: string[];
 }
 
 export const FormRowSelect: FC<IFormRowSelectProps> = ({

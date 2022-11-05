@@ -1,15 +1,12 @@
-export type JobTypeOptions = ["full-time", "part-time", "remote", "internship"];
-export type StatusOptions = ["interview", "declined", "pending"];
-
 export interface IInitialStateJob {
-  [key: string]: string | boolean | JobTypeOptions | StatusOptions | undefined;
+  [key: string]: string | boolean | string[] | undefined;
   isLoading: boolean;
   position: string;
   company: string;
   jobLocation: string;
-  jobTypeOptions: JobTypeOptions;
+  jobTypeOptions: string[];
   jobType: string;
-  statusOptions: StatusOptions;
+  statusOptions: string[];
   status: string;
   isEditing: boolean;
   editJobId: string;

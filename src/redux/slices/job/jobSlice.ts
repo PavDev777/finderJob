@@ -32,13 +32,9 @@ export const createJob = createAsyncThunk<
     "position" | "company" | "jobLocation" | "jobType" | "status"
   >,
   { state: { user: IuserSliceState }; rejectValue: string }
->("job/createJob", async (job, { getState, dispatch, rejectWithValue }) => {
+>("job/createJob", async (job, { dispatch, rejectWithValue }) => {
   try {
-    const response = await fetchCustom.post("/jobs", job, {
-      headers: {
-        authorization: `Bearer ${getState().user.user?.token}`,
-      },
-    });
+    const response = await fetchCustom.post("/jobs", job);
     dispatch(clearValues());
     return response.data;
   } catch (error) {
@@ -58,11 +54,7 @@ export const deleteJob = createAsyncThunk<
   { state: { user: IuserSliceState }; rejectValue: string }
 >("job/deleteJob", async (idJob, thunkAPI) => {
   try {
-    const response = await fetchCustom.delete(`/jobs/${idJob}`, {
-      headers: {
-        authorization: `Bearer ${thunkAPI.getState().user.user?.token}`,
-      },
-    });
+    const response = await fetchCustom.delete(`/jobs/${idJob}`);
     thunkAPI.dispatch(getAllJobs());
     return response.data.msg;
   } catch (error) {
@@ -78,11 +70,7 @@ export const editedJob = createAsyncThunk<
   { state: { user: IuserSliceState }; rejectValue: string }
 >("job/editJob", async ({ jobId, job }, thunkAPI) => {
   try {
-    const response = await fetchCustom.patch(`/jobs/${jobId}`, job, {
-      headers: {
-        authorization: `Bearer ${thunkAPI.getState().user.user?.token}`,
-      },
-    });
+    const response = await fetchCustom.patch(`/jobs/${jobId}`, job);
     thunkAPI.dispatch(clearValues());
     return response.data;
   } catch (error) {

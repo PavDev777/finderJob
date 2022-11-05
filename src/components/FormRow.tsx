@@ -14,7 +14,8 @@ type typeInputName =
   | "location"
   | "position"
   | "company"
-  | "jobLocation";
+  | "jobLocation"
+  | "search";
 
 interface IFormRowProps {
   type: inputType;

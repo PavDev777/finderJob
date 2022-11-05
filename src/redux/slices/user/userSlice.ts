@@ -9,7 +9,6 @@ import {
   removeUserFromLocalStorage,
   userLocalStorageAdd,
 } from "../../../utils/localStorage";
-import { registerUserThunk } from "./userThunk";
 
 export interface User {
   email: string;
@@ -38,15 +37,14 @@ export const registerUser = createAsyncThunk<
     rejectValue: string;
   }
 >("user/registerUser", async (user, thunkAPI) => {
-  // try {
-  //   const response = await fetchCustom.post("/auth/register", user);
-  //   return response.data.user;
-  // } catch (error) {
-  //   if (error instanceof AxiosError) {
-  //     return thunkAPI.rejectWithValue(error.response?.data.msg);
-  //   }
-  // }
-  return registerUserThunk("/auth/register", user, thunkAPI);
+  try {
+    const response = await fetchCustom.post("/auth/register", user);
+    return response.data.user;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      return thunkAPI.rejectWithValue(error.response?.data.msg);
+    }
+  }
 });
 
 export const loginUser = createAsyncThunk<
@@ -70,13 +68,9 @@ export const updateUser = createAsyncThunk<
   User,
   IProfileUser,
   { state: { user: IuserSliceState }; rejectValue: string }
->("user/updateUser", async (user, { getState, rejectWithValue, dispatch }) => {
+>("user/updateUser", async (user, { rejectWithValue, dispatch }) => {
   try {
-    const response = await fetchCustom.patch("/auth/updateUser", user, {
-      headers: {
-        authorization: `Bearer ${getState().user.user?.token}`,
-      },
-    });
+    const response = await fetchCustom.patch("/auth/updateUser", user);
     return response.data.user;
   } catch (error) {
     if (error instanceof AxiosError) {

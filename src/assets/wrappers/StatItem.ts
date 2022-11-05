@@ -1,6 +1,11 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
-const Wrapper = styled.article`
+interface IStatsItemWrapper {
+  bgc: string;
+  color: string;
+}
+
+const Wrapper = styled.article<IStatsItemWrapper>`
   padding: 2rem;
   background: var(--white);
   border-radius: var(--borderRadius);
@@ -26,7 +31,7 @@ const Wrapper = styled.article`
   .icon {
     width: 70px;
     height: 60px;
-    background: ${(props) => props.bcg};
+    background: ${(props) => props.bgc};
     border-radius: var(--borderRadius);
     display: flex;
     align-items: center;
@@ -36,6 +41,6 @@ const Wrapper = styled.article`
       color: ${(props) => props.color};
     }
   }
-`
+`;
 
-export default Wrapper
+export default Wrapper;
