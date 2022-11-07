@@ -1,43 +1,43 @@
-import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import mainLogo from "../assets/images/main2.svg";
-import { Logo } from "../components";
-import { useAppSelector } from "../redux/hooks";
-import { userSelector } from "../redux/slices/user/selectors";
+import { useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import styled from 'styled-components'
+import mainLogo from '../assets/images/main2.svg'
+import { Logo } from '../components'
+import { useAppSelector } from '../redux/hooks'
+import { userSelector } from '../redux/slices/user/selectors'
 
 export const Landing = () => {
-  const { user } = useAppSelector(userSelector);
-  const navigate = useNavigate();
+  const { user } = useAppSelector(userSelector)
+  const navigate = useNavigate()
 
   useEffect(() => {
-    user && navigate("/");
-  }, [user]);
+    user && navigate('/')
+  }, [user])
 
   return (
     <Wrapper>
       <nav>
         <Logo />
       </nav>
-      <div className="container page">
-        <div className="info">
+      <div className='container page'>
+        <div className='info'>
           <h1>
-            job <span>tracking</span> app
+            job <span>finder</span>
           </h1>
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit
             porro id odit nulla nesciunt mollitia maiores ex aliquam! Autem,
             saepe.
           </p>
-          <Link to="/register" className="btn btn-hero">
+          <Link to='/register' className='btn btn-hero'>
             Login/Register
           </Link>
         </div>
-        <img src={mainLogo} alt="job hunt " className="img main-img" />
+        <img src={mainLogo} alt='job hunt ' className='img main-img' />
       </div>
     </Wrapper>
-  );
-};
+  )
+}
 
 const Wrapper = styled.main`
   nav {
@@ -74,4 +74,4 @@ const Wrapper = styled.main`
       display: block;
     }
   }
-`;
+`

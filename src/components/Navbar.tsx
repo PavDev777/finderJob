@@ -1,44 +1,40 @@
-import classes from "classnames";
-import { useState } from "react";
+import classes from 'classnames'
+import { useState } from 'react'
 import {
   FaAlignLeft,
   FaCaretDown,
   FaCaretUp,
-  FaUserCircle,
-} from "react-icons/fa";
-import Wrapper from "../assets/wrappers/Navbar";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { userSelector } from "../redux/slices/user/selectors";
-import { logOutUser, sidebarToggle } from "../redux/slices/user/userSlice";
-import { Logo } from "./Logo";
+  FaUserCircle
+} from 'react-icons/fa'
+import Wrapper from '../assets/wrappers/Navbar'
+import { useAppDispatch, useAppSelector } from '../redux/hooks'
+import { userSelector } from '../redux/slices/user/selectors'
+import { clearStoreThunks, sidebarToggle } from '../redux/slices/user/userSlice'
 
 export const Navbar = () => {
-  const [isLogOut, setIsLogOut] = useState(false);
-  const { user } = useAppSelector(userSelector);
-  const dispatch = useAppDispatch();
+  const [isLogOut, setIsLogOut] = useState(false)
+  const { user } = useAppSelector(userSelector)
+  const dispatch = useAppDispatch()
 
-  const dropdown = classes("dropdown", {
-    "show-dropdown": isLogOut,
-  });
+  const dropdown = classes('dropdown', {
+    'show-dropdown': isLogOut
+  })
 
   const toggle = () => {
-    dispatch(sidebarToggle());
-  };
+    dispatch(sidebarToggle())
+  }
 
   return (
     <Wrapper>
-      <div className="nav-center">
-        <button type="button" className="toggle-btn" onClick={toggle}>
+      <div className='nav-center'>
+        <button type='button' className='toggle-btn' onClick={toggle}>
           <FaAlignLeft />
         </button>
-        <div>
-          <Logo />
-          <h3 className="logo-text">dashboard</h3>
-        </div>
-        <div className="btn-container">
+        <h3 className='logo-text'>dashboard</h3>
+        <div className='btn-container'>
           <button
-            type="button"
-            className="btn"
+            type='button'
+            className='btn'
             onClick={() => setIsLogOut(!isLogOut)}
           >
             <FaUserCircle />
@@ -47,9 +43,9 @@ export const Navbar = () => {
           </button>
           <div className={dropdown}>
             <button
-              type="button"
-              className="dropdown-btn"
-              onClick={() => dispatch(logOutUser())}
+              type='button'
+              className='dropdown-btn'
+              onClick={() => dispatch(clearStoreThunks())}
             >
               logout
             </button>
@@ -57,5 +53,5 @@ export const Navbar = () => {
         </div>
       </div>
     </Wrapper>
-  );
-};
+  )
+}
